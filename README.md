@@ -27,6 +27,7 @@ or add the following to the `require` section of your `composer.json` file:
 * Service Providers
 	* `Providers\BladeServiceProvider` - a service provider for Laravel 5 that defines some custom Blade directives.
 	* `Providers\HtmlServiceProvider` - a service provider for Laravel 5 that registers the custom `FormBuilder` class.
+	* `Providers\UserProviderServiceProvider` - a service provider for Laravel 5 that registers the custom `UserProvider`.
 	* `Providers\ValidationServiceProvider` - a service provider for Laravel 5 that registers the custom `Validation` class.
 * Traits
 	* `Traits\ChecksJoins` - allows a query to check if a table has already been joined.

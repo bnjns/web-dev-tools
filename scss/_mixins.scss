@@ -1,0 +1,89 @@
+@mixin wrapper() {
+    width: 100%;
+    
+    @media (min-width: 970px) {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 100%;
+        width: 970px;
+    }
+}
+
+@mixin bg_gradient($top, $bottom) {
+    background-color: $top; // fallback/image non-cover color
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from($top), to($bottom)); // Safari 4+, Chrome 1-9
+    background-image: -webkit-linear-gradient(top, $top, $bottom); // Safari 5.1+, Mobile Safari, Chrome 10+
+    background-image: -moz-linear-gradient(top, $top, $bottom); // Firefox 3.6+
+    background-image: -ms-linear-gradient(top, $top, $bottom); // IE 10+
+    background-image: -o-linear-gradient(top, $top, $bottom); // Opera 11.10+
+    background-image: linear-gradient(to bottom, $top, $bottom);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, StartColorStr='#{$top}', EndColorStr='#{$bottom}');
+}
+
+@mixin transition() {
+    $transition_properties: background-color, border-color, box-shadow, color, opacity;
+    $transition_time: 0.1s, 0.1s, 0.1s, 0.1s, 0.1s;
+    $transition_fn: ease-in, ease-in, ease-in, ease-in, ease-in;
+    
+    -webkit-transition-duration: $transition_time;
+    -webkit-transition-property: $transition_properties;
+    -webkit-transition-timing-function: $transition_fn;
+    -moz-transition-duration: $transition_time;
+    -moz-transition-property: $transition_properties;
+    -moz-transition-timing-function: $transition_fn;
+    -o-transition-duration: $transition_time;
+    -o-transition-property: $transition_properties;
+    -o-transition-timing-function: $transition_fn;
+    -ms-transition-duration: $transition_time;
+    -ms-transition-property: $transition_properties;
+    -ms-transition-timing-function: $transition_fn;
+    transition-duration: $transition_time;
+    transition-property: $transition_properties;
+    transition-timing-function: $transition_fn;
+}
+
+@mixin user_select_none() {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@mixin no-list() {
+    list-style-type: none;
+    margin: 0;
+    li {
+        list-style: none;
+        margin: 0;
+    }
+}
+
+@mixin shine() {
+    box-shadow: inset 0 0.067em 0 rgba(255, 255, 255, 0.4),
+    inset 0 -0.067em 0.2em rgba(0, 0, 0, 1);
+}
+
+@mixin shadow() {
+    box-shadow: 0 0 0.667em rgba(0, 0, 0, 0.8);
+}
+
+@mixin bg_gradient_grey() {
+    @include bg_gradient(#EEE, #BBB);
+}
+
+@mixin bg_gradient_grey_inv() {
+    @include bg_gradient(#BBB, #EEE);
+}
+
+@mixin clearfix() {
+    &:before,
+    &:after {
+        content: " ";
+        display: table;
+    }
+    &:after {
+        clear: both;
+    }
+}

@@ -2,7 +2,7 @@
 
 namespace bnjns\WebDevTools\Providers;
 
-use bnjns\PhpTools\Html\FormBuilder;
+use bnjns\WebDevTools\Html\FormBuilder;
 
 class HtmlServiceProvider extends \Collective\Html\HtmlServiceProvider
 {

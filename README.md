@@ -31,12 +31,13 @@ or add the following to the `require` section of your `composer.json` file:
 	* `Providers\ValidationServiceProvider` - a service provider for Laravel 5 that registers the custom `Validation` class.
 * Traits
 	* `Traits\ChecksJoins` - allows a query to check if a table has already been joined.
+	* `Traits\ChecksPaginationPage` - checks the pagination result set, and redirects to page 1 if there are no results. 
 	* `Traits\CorrectsPaginatorPath` - corrects the path of the Laravel 5 `Paginator`.
-	* `CorrectsTimezone` - allows easy conversion between timezones.
-	* `CreatesSlugs` - provides an easy way of creating slugs from a `Request` object.
-	* `DeletesDirectory` - provides a method for recursively deleting a directory.
-	* `DistinctPaginte` - fixes the Laravel 5 `paginate()` method to work with distinct selects.
-	* `Validatable` - creates an easy way of defining validation rules and messages that can be used in multiple locations.
+	* `Traits\CorrectsTimezone` - allows easy conversion between timezones.
+	* `Traits\CreatesSlugs` - provides an easy way of creating slugs from a `Request` object.
+	* `Traits\DeletesDirectory` - provides a method for recursively deleting a directory.
+	* `Traits\DistinctPaginte` - fixes the Laravel 5 `paginate()` method to work with distinct selects.
+	* `Traits\Validatable` - creates an easy way of defining validation rules and messages that can be used in multiple locations.
 * Validation
 	* `Validation\LaravelValidator` - a Laravel 5 Validator that registers some custom validation rules.
 	

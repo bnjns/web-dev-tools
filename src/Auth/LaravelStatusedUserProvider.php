@@ -52,7 +52,7 @@ class LaravelStatusedUserProvider extends EloquentUserProvider
      */
     private function checkUserStatus($user)
     {
-        if($user && !$user->attributes[$user->statusAttribute ?: 'status']) {
+        if($user && !$user->{$user->statusAttribute ?: 'status'}) {
             session()->flush();
             session()->regenerate();
             

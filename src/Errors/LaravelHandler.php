@@ -1,6 +1,6 @@
 <?php
 
-namespace Errors;
+namespace bnjns\WebDevTools\Errors;
 
 use BadMethodCallException;
 use Exception;

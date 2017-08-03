@@ -24,7 +24,7 @@ trait IsOrdered
         /**
          * Hook into the updating event to re-order the list.
          */
-        static::updating(function ($model) {
+        static::saving(function ($model) {
             if($model->processOrderOnSave) {
                 $currentOrder = $model->original[static::$orderAttribute];
                 $newOrder     = $model->{static::$orderAttribute};

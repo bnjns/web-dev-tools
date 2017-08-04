@@ -9,6 +9,7 @@ class ValidationServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
+     *
      * @return void
      */
     public function boot()
@@ -17,9 +18,10 @@ class ValidationServiceProvider extends ServiceProvider
             return new LaravelValidator($translator, $data, $rules, $messages);
         });
     }
-    
+
     /**
      * Register the application services.
+     *
      * @return void
      */
     public function register()

@@ -9,6 +9,7 @@ class BladeServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
+     *
      * @return void
      */
     public function boot()
@@ -23,9 +24,10 @@ class BladeServiceProvider extends ServiceProvider
             return "<?php echo \$errors->any() && \$errors->default->has({$name}) ? ('<p class=\"help-block\">' . \$errors->default->first({$name}) . '</p>') : ''; ?>";
         });
     }
-    
+
     /**
      * Register the application services.
+     *
      * @return void
      */
     public function register()

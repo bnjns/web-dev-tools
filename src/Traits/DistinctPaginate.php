@@ -12,10 +12,12 @@ trait DistinctPaginate
 {
     /**
      * A custom paginate method for when using the distinct() method. This fixes the incorrect 'total' reported by the default paginate.
+     *
      * @param Builder $query
      * @param int     $perPage
      * @param array   $columns
      * @param string  $pageName
+     *
      * @return LengthAwarePaginator
      */
     public function scopeDistinctPaginate(Builder $query, $perPage = 15, array $columns = ['*'], $pageName = 'page')
@@ -24,11 +26,11 @@ trait DistinctPaginate
         $results = $query->distinct()
                          ->forPage(Input::get($pageName, 1), $perPage)
                          ->get($columns);
-        
+
         // Now do a count on an unlimited version of the previous query
         $query->limit(static::count())->offset(0);
-        $count = DB::select("SELECT COUNT(*) FROM (" . $query->toSql() . ") src;", $query->getBindings())[0]->{"COUNT(*)"};
-        
+        $count = DB::select('SELECT COUNT(*) FROM ('.$query->toSql().') src;', $query->getBindings())[0]->{'COUNT(*)'};
+
         // Create the paginator
         return (new LengthAwarePaginator(
             $results,

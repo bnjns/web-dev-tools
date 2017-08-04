@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Http\Request;
 use Prophecy\Exception\Doubler\MethodNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -27,10 +28,11 @@ class LaravelHandler extends Handler
             return response()->json([
                 'error'   => $this->getHttpMessage($exception),
                 '__error' => true,
-            ], $this->getHttpStatusCode($exception));
+                                    ],
+                                    $this->getHttpStatusCode($exception));
         }
-        
-        if(!$request->user() && ($exception instanceof AuthenticationException || $exception instanceof AuthorizationException)) {
+    
+        if($this->showRedirectToAuthentication($request, $exception)) {
             return $this->unauthenticated();
         }
         
@@ -71,7 +73,7 @@ class LaravelHandler extends Handler
     {
         if($e instanceof AuthenticationException) {
             return Response::HTTP_UNAUTHORIZED;
-        } else if($e instanceof AuthorizationException) {
+        } else if($e instanceof AuthorizationException || ($e instanceof HttpException && $e->getStatusCode() == 403)) {
             return Response::HTTP_FORBIDDEN;
         } else if($e instanceof NotFoundHttpException) {
             return Response::HTTP_NOT_FOUND;
@@ -89,12 +91,26 @@ class LaravelHandler extends Handler
     {
         if($e instanceof AuthenticationException) {
             return 'You need to be logged in to do that.';
-        } else if($e instanceof AuthorizationException) {
+        } else if($e instanceof AuthorizationException || ($e instanceof HttpException && $e->getStatusCode() == 403)) {
             return 'You aren\'t allowed to do that.';
         } else if($e instanceof NotFoundHttpException) {
             return 'We couldn\'t find what you were after.';
         }
         
         return 'Oops! An unknown error occurred';
+    }
+    
+    /**
+     * Determine whether the response should be a redirect to the login form.
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception               $e
+     * @return bool
+     */
+    protected function showRedirectToAuthentication(Request $request, Exception $e)
+    {
+        return !$request->user()
+               && ($e instanceof AuthenticationException
+                   || $e instanceof AuthorizationException
+                   || ($e instanceof HttpException && $e->getStatusCode() == 403));
     }
 }

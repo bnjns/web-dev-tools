@@ -24,22 +24,22 @@ class LaravelHandler extends Handler
     public function render($request, Exception $exception)
     {
         $exception = $this->prepareException($exception);
-        
+
         if($request->expectsJson()) {
             return response()->json([
                 'error'   => $this->getHttpMessage($exception),
                 '__error' => true,
-                                    ],
-                                    $this->getHttpStatusCode($exception));
+            ],
+                $this->getHttpStatusCode($exception));
         }
-    
+
         if($this->showRedirectToAuthentication($request, $exception)) {
             return $this->unauthenticated();
         }
-        
+
         return parent::render($request, $exception);
     }
-    
+
     /**
      * Prepare exception for rendering.
      * @param  \Exception $e
@@ -48,14 +48,14 @@ class LaravelHandler extends Handler
     protected function prepareException(Exception $e)
     {
         $e = parent::prepareException($e);
-        
+
         if($e instanceof MethodNotFoundException || $e instanceof BadMethodCallException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
-        
+
         return $e;
     }
-    
+
     /**
      * Convert an authentication exception into an unauthenticated response.
      * @return \Illuminate\Http\Response
@@ -64,7 +64,7 @@ class LaravelHandler extends Handler
     {
         return redirect()->guest(isset($this->loginRoute) ? $this->loginRoute : '/');
     }
-    
+
     /**
      * Get the HTTP status code for an exception.
      * @param \Exception $e
@@ -79,10 +79,10 @@ class LaravelHandler extends Handler
         } else if($e instanceof NotFoundHttpException) {
             return Response::HTTP_NOT_FOUND;
         }
-        
+
         return Response::HTTP_INTERNAL_SERVER_ERROR;
     }
-    
+
     /**
      * Get the HTTP status message for an exception.
      * @param \Exception $e
@@ -97,10 +97,10 @@ class LaravelHandler extends Handler
         } else if($e instanceof NotFoundHttpException) {
             return 'We couldn\'t find what you were after.';
         }
-        
+
         return 'Oops! An unknown error occurred';
     }
-    
+
     /**
      * Determine whether the response should be a redirect to the login form.
      * @param \Illuminate\Http\Request $request
@@ -110,8 +110,8 @@ class LaravelHandler extends Handler
     protected function showRedirectToAuthentication(Request $request, Exception $e)
     {
         return !$request->user()
-               && ($e instanceof AuthenticationException
-                   || $e instanceof AuthorizationException
-                   || ($e instanceof HttpException && $e->getStatusCode() == 403));
+               && ($e instanceof AuthenticationException ||
+                   $e instanceof AuthorizationException ||
+                   ($e instanceof HttpException && $e->getStatusCode() == 403));
     }
 }

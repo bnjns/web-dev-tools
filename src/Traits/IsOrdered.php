@@ -26,9 +26,16 @@ trait IsOrdered
     public static function boot()
     {
         /**
+         * Hook into the created event to fix the order.
+         */
+        static::created(function ($model) {
+            $model->insertIntoOrder();
+        });
+
+        /**
          * Hook into the updating event to re-order the list.
          */
-        static::updating(function ($model) {
+        static::updated(function ($model) {
             if ($model->processOrderOnSave) {
                 $currentOrder = $model->original[static::$orderAttribute];
                 $newOrder     = $model->{static::$orderAttribute};
@@ -36,17 +43,20 @@ trait IsOrdered
                 if ($newOrder != $currentOrder) {
                     $increasing = $newOrder > $currentOrder;
                     if ($increasing) {
-                        $to_move = static::whereBetween(static::$orderAttribute, [$currentOrder + 1, $newOrder])->get();
+                        $to_move = static::whereBetween(static::$orderAttribute, [$currentOrder + 1, $newOrder]);
                     } else {
-                        $to_move = static::whereBetween(static::$orderAttribute, [$newOrder, $currentOrder - 1])->get();
+                        $to_move = static::whereBetween(static::$orderAttribute, [$newOrder, $currentOrder - 1]);
                     }
 
-                    foreach ($to_move as $status) {
-                        $status->processOrderOnSave = false;
-                        $status->update([
-                            static::$orderAttribute => $increasing ? ($status->{static::$orderAttribute} - 1) : ($status->{static::$orderAttribute} + 1),
-                        ]);
-                    }
+                    $to_move->get()
+                            ->map(function ($m) use ($increasing) {
+                                $m->processOrderOnSave = false;
+                                $m->update([
+                                    static::$orderAttribute => $increasing
+                                        ? ($m->{static::$orderAttribute} - 1)
+                                        : ($m->{static::$orderAttribute} + 1),
+                                ]);
+                            });
                 }
             }
             $model->processOrderOnSave = true;
@@ -56,12 +66,21 @@ trait IsOrdered
          * Hook into the deleted event to move any later items down.
          */
         static::deleted(function ($model) {
-            $update = static::where(static::$orderAttribute, '>', $model->{static::$orderAttribute})->get();
-            foreach ($update as $status) {
-                $status->update([
-                    static::$orderAttribute => $status->{static::$orderAttribute} - 1,
-                ]);
-            }
+            static::where(static::$orderAttribute, '>', $model->{static::$orderAttribute})
+                  ->get()
+                  ->map(function ($m) {
+                      $m->processOrderOnSave = false;
+                      $m->update([
+                          static::$orderAttribute => $m->{static::$orderAttribute} - 1,
+                      ]);
+                  });
+        });
+
+        /**
+         * Hook into the restore event to restore the correct order.
+         */
+        static::restored(function ($model) {
+            $model->insertIntoOrder();
         });
 
         parent::boot();
@@ -104,6 +123,26 @@ trait IsOrdered
     }
 
     /**
+     * "Insert" the model in the order - this bumps everything that should be after by 1.
+     *
+     * @return void
+     */
+    public function insertIntoOrder()
+    {
+        if ($this->exists()) {
+            static::where(static::$orderAttribute, '>=', $this->{static::$orderAttribute})
+                  ->where('id', '!=', $this->id)
+                  ->get()
+                  ->map(function ($m) {
+                      $m->processOrderOnSave = false;
+                      $m->update([
+                          static::$orderAttribute => $m->{static::$orderAttribute} + 1,
+                      ]);
+                  });
+        }
+    }
+
+    /**
      * Move a driver status to a new position in the order.
      *
      * @param $newOrder
@@ -112,13 +151,15 @@ trait IsOrdered
      */
     public function moveTo($newOrder)
     {
-        $newOrder = (int)$newOrder;
-        if ($newOrder == $this->{static::$orderAttribute} || $newOrder < 1 || $newOrder > static::count()) {
-            return;
-        }
+        if ($this->exists()) {
+            $newOrder = (int)$newOrder;
+            if ($newOrder == $this->{static::$orderAttribute} || $newOrder < 1 || $newOrder > static::count()) {
+                return;
+            }
 
-        return $this->update([
-            static::$orderAttribute => $newOrder,
-        ]);
+            return $this->update([
+                static::$orderAttribute => $newOrder,
+            ]);
+        }
     }
 }

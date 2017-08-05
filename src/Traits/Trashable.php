@@ -13,7 +13,7 @@ trait Trashable
      */
     public function scopeTrashed($query)
     {
-        if (request()->has('withTrashed')) {
+        if (request()->exists('withTrashed')) {
             $query->withTrashed();
         }
     }

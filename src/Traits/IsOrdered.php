@@ -10,6 +10,7 @@ trait IsOrdered
      * @var string
      */
     protected static $orderAttribute = 'order';
+
     /**
      * Sets whether the model should process the order change when it's saved.
      *
@@ -30,7 +31,7 @@ trait IsOrdered
         static::updating(function ($model) {
             if ($model->processOrderOnSave) {
                 $currentOrder = $model->original[static::$orderAttribute];
-                $newOrder = $model->{static::$orderAttribute};
+                $newOrder     = $model->{static::$orderAttribute};
 
                 if ($newOrder != $currentOrder) {
                     $increasing = $newOrder > $currentOrder;
@@ -67,6 +68,42 @@ trait IsOrdered
     }
 
     /**
+     * Add a scope to order the list.
+     *
+     * @param $query
+     *
+     * @return void
+     */
+    public function scopeOrdered($query)
+    {
+        $this->scopeOrderedAsc($query);
+    }
+
+    /**
+     * Add a scope to order the list ascending.
+     *
+     * @param $query
+     *
+     * @return void
+     */
+    public function scopeOrderedAsc($query)
+    {
+        $query->orderBy(static::$orderAttribute, 'ASC');
+    }
+
+    /**
+     * Add a scope to order the list descending.
+     *
+     * @param $query
+     *
+     * @return void
+     */
+    public function scopeOrderedDesc($query)
+    {
+        $query->orderBy(static::$orderAttribute, 'DESC');
+    }
+
+    /**
      * Move a driver status to a new position in the order.
      *
      * @param $newOrder
@@ -75,7 +112,7 @@ trait IsOrdered
      */
     public function moveTo($newOrder)
     {
-        $newOrder = (int) $newOrder;
+        $newOrder = (int)$newOrder;
         if ($newOrder == $this->{static::$orderAttribute} || $newOrder < 1 || $newOrder > static::count()) {
             return;
         }

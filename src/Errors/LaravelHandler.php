@@ -27,7 +27,7 @@ class LaravelHandler extends Handler
     {
         $exception = $this->prepareException($exception);
 
-        if ($request->expectsJson()) {
+        if ($this->shouldReturnAjaxError($request, $exception)) {
             return response()->json([
                 'error'   => $this->getHttpMessage($exception),
                 '__error' => true,
@@ -81,9 +81,9 @@ class LaravelHandler extends Handler
     {
         if ($e instanceof AuthenticationException) {
             return Response::HTTP_UNAUTHORIZED;
-        } elseif ($e instanceof AuthorizationException || ($e instanceof HttpException && $e->getStatusCode() == 403)) {
+        } else if ($e instanceof AuthorizationException || ($e instanceof HttpException && $e->getStatusCode() == 403)) {
             return Response::HTTP_FORBIDDEN;
-        } elseif ($e instanceof NotFoundHttpException) {
+        } else if ($e instanceof NotFoundHttpException) {
             return Response::HTTP_NOT_FOUND;
         }
 
@@ -101,9 +101,9 @@ class LaravelHandler extends Handler
     {
         if ($e instanceof AuthenticationException) {
             return 'You need to be logged in to do that.';
-        } elseif ($e instanceof AuthorizationException || ($e instanceof HttpException && $e->getStatusCode() == 403)) {
+        } else if ($e instanceof AuthorizationException || ($e instanceof HttpException && $e->getStatusCode() == 403)) {
             return 'You aren\'t allowed to do that.';
-        } elseif ($e instanceof NotFoundHttpException) {
+        } else if ($e instanceof NotFoundHttpException) {
             return 'We couldn\'t find what you were after.';
         }
 
@@ -124,5 +124,18 @@ class LaravelHandler extends Handler
                && ($e instanceof AuthenticationException ||
                    $e instanceof AuthorizationException ||
                    ($e instanceof HttpException && $e->getStatusCode() == 403));
+    }
+
+    /**
+     * Test whether the error should be handled by returning an AJAX error.
+     *
+     * @param            $request
+     * @param \Exception $exception
+     *
+     * @return bool
+     */
+    protected function shouldReturnAjaxError($request, Exception $exception)
+    {
+        return $request->expectsJson() && !($exception instanceof ValidationException);
     }
 }

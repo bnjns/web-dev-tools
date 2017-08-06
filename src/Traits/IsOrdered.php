@@ -48,7 +48,8 @@ trait IsOrdered
                         $to_move = static::whereBetween(static::$orderAttribute, [$newOrder, $currentOrder - 1]);
                     }
 
-                    $to_move->get()
+                    $to_move->where('id', '!=', $model->id)
+                            ->get()
                             ->map(function ($m) use ($increasing) {
                                 $m->processOrderOnSave = false;
                                 $m->update([

@@ -177,8 +177,8 @@ class SimpleLaravelCrudController extends LaravelController
 
         $status = $model->update($this->getAttributes($request));
         return [
-            'status' => $status,
-            'model'  => $model,
+            $status,
+            $model,
         ];
     }
 
@@ -210,8 +210,8 @@ class SimpleLaravelCrudController extends LaravelController
         $status = $model->delete();
 
         return [
-            'status' => $status,
-            'model'  => $model,
+            $status,
+            $model,
         ];
     }
 
@@ -235,8 +235,8 @@ class SimpleLaravelCrudController extends LaravelController
         $status = $model->restore();
 
         return [
-            'status' => $status,
-            'model'  => $model,
+            $status,
+            $model,
         ];
     }
 

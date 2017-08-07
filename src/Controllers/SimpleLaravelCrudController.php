@@ -114,7 +114,7 @@ class SimpleLaravelCrudController extends LaravelController
     /**
      * Process the request and store the new model instance.
      *
-     * @return mixed
+     * @return array
      */
     public function store()
     {
@@ -124,7 +124,12 @@ class SimpleLaravelCrudController extends LaravelController
         $request = request();
         $this->validate($request, $this->getValidationRules($request), $this->getValidationMessages($request));
 
-        return call_user_func([$this->modelClass, 'create'], $this->getAttributes($request));
+        $result = call_user_func([$this->modelClass, 'create'], $this->getAttributes($request));
+
+        return [
+            'status' => is_object($result),
+            'model'  => is_object($result) ? $result : null,
+        ];
     }
 
     /**

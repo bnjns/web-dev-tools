@@ -127,8 +127,8 @@ class SimpleLaravelCrudController extends LaravelController
         $result = call_user_func([$this->modelClass, 'create'], $this->getAttributes($request));
 
         return [
-            'status' => is_object($result),
-            'model'  => is_object($result) ? $result : null,
+            is_object($result),
+            is_object($result) ? $result : null,
         ];
     }
 

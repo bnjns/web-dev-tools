@@ -8,6 +8,25 @@ use Carbon\Carbon;
 class FormBuilder extends \Collective\Html\FormBuilder
 {
     /**
+     * Determine if the value is selected.
+     *
+     * @param  string $value
+     * @param  string $selected
+     *
+     * @return null|string
+     */
+    protected function getSelectedValue($value, $selected)
+    {
+        if (is_array($selected)) {
+            return in_array($value, $selected, false) ? 'selected' : null;
+        } else if ($selected instanceof Collection) {
+            return $selected->contains($value) ? 'selected' : null;
+        }
+
+        return ((string)$value == (string)$selected) ? 'selected' : null;
+    }
+
+    /**
      * Create a dropdown group for hour and minute.
      *
      * @param       $name
@@ -27,8 +46,8 @@ class FormBuilder extends \Collective\Html\FormBuilder
         }
 
         return sprintf('%s : %s',
-            $this->select($name.'_hour', $hours, $this->getValueAttribute($name.'_hour', Carbon::now()->hour), $options),
-            $this->select($name.'_minute', $minutes, $this->getValueAttribute($name.'_minute', Carbon::now()->minute), $options));
+            $this->select($name . '_hour', $hours, $this->getValueAttribute($name . '_hour', Carbon::now()->hour), $options),
+            $this->select($name . '_minute', $minutes, $this->getValueAttribute($name . '_minute', Carbon::now()->minute), $options));
     }
 
     /**
@@ -48,9 +67,9 @@ class FormBuilder extends \Collective\Html\FormBuilder
         }
 
         return sprintf('%s / %s / %s',
-            $this->select($name.'_day', $days, $this->getValueAttribute($name.'_day', Carbon::now()->day), $options),
-            $this->selectMonth($name.'_month', $this->getValueAttribute($name.'_month', Carbon::now()->month), $options),
-            $this->selectYear($name.'_year', date('Y') - 1, date('Y') + 1, $this->getValueAttribute($name.'_year', Carbon::now()->year), $options));
+            $this->select($name . '_day', $days, $this->getValueAttribute($name . '_day', Carbon::now()->day), $options),
+            $this->selectMonth($name . '_month', $this->getValueAttribute($name . '_month', Carbon::now()->month), $options),
+            $this->selectYear($name . '_year', date('Y') - 1, date('Y') + 1, $this->getValueAttribute($name . '_year', Carbon::now()->year), $options));
     }
 
     /**
@@ -213,7 +232,7 @@ class FormBuilder extends \Collective\Html\FormBuilder
      */
     public function radioGroup($name, $list = [], $selected = null, $options = [])
     {
-        $selected = $this->getValueAttribute($name, $selected);
+        $selected      = $this->getValueAttribute($name, $selected);
         $options['id'] = $this->getIdAttribute($name, $options);
         if (!isset($options['name'])) {
             $options['name'] = $name;
@@ -221,13 +240,13 @@ class FormBuilder extends \Collective\Html\FormBuilder
 
         $class = 'radio';
         if (isset($options['class'])) {
-            $class .= ' '.$options['class'];
+            $class .= ' ' . $options['class'];
             unset($options['class']);
         }
 
         $html = [];
         foreach ($list as $value => $text) {
-            $html[] = "<div class=\"{$class}\"><label>".$this->radio($name, $value, $selected == $value, $options).$text.'</label></div>';
+            $html[] = "<div class=\"{$class}\"><label>" . $this->radio($name, $value, $selected == $value, $options) . $text . '</label></div>';
         }
 
         $list = implode('', $html);

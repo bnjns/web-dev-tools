@@ -1,6 +1,6 @@
 <?php
 
-namespace bnjns\WebDevTools\Policies;
+namespace bnjns\WebDevTools\Laravel\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 

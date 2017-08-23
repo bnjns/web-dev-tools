@@ -1,8 +1,8 @@
 <?php
 
-namespace bnjns\WebDevTools\Providers;
+namespace bnjns\WebDevTools\Laravel\Providers;
 
-use bnjns\WebDevTools\Validation\LaravelValidator;
+use bnjns\WebDevTools\Laravel\Validation\Validator;
 use Illuminate\Support\ServiceProvider;
 
 class ValidationServiceProvider extends ServiceProvider
@@ -15,7 +15,7 @@ class ValidationServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->validator->resolver(function ($translator, $data, $rules, $messages) {
-            return new LaravelValidator($translator, $data, $rules, $messages);
+            return new Validator($translator, $data, $rules, $messages);
         });
     }
 
@@ -26,6 +26,6 @@ class ValidationServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 }

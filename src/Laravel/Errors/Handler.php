@@ -1,12 +1,12 @@
 <?php
 
-namespace bnjns\WebDevTools\Errors;
+namespace bnjns\WebDevTools\Laravel\Errors;
 
 use BadMethodCallException;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Foundation\Exceptions\Handler;
+use Illuminate\Foundation\Exceptions\Handler as BaseHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Prophecy\Exception\Doubler\MethodNotFoundException;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class LaravelHandler extends Handler
+class Handler extends BaseHandler
 {
     /**
      * Render an exception into an HTTP response.

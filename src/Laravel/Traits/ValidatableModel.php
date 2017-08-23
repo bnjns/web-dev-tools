@@ -1,8 +1,8 @@
 <?php
 
-namespace bnjns\WebDevTools\Traits;
+namespace bnjns\WebDevTools\Laravel\Traits;
 
-trait Validatable
+trait ValidatableModel
 {
     /**
      * Get an array of validation rules for the model.

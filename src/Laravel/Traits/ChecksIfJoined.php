@@ -1,10 +1,10 @@
 <?php
 
-namespace bnjns\WebDevTools\Traits;
+namespace bnjns\WebDevTools\Laravel\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 
-trait ChecksJoins
+trait ChecksIfJoined
 {
     /**
      * Check if a query has already been joined to a table.

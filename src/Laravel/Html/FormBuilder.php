@@ -1,11 +1,11 @@
 <?php
 
-namespace bnjns\WebDevTools\Html;
+namespace bnjns\WebDevTools\Laravel\Html;
 
-use App\User;
 use Carbon\Carbon;
+use Collective\Html\FormBuilder as CollectiveFormBuilder;
 
-class FormBuilder extends \Collective\Html\FormBuilder
+class FormBuilder extends CollectiveFormBuilder
 {
     /**
      * Determine if the value is selected.
@@ -70,78 +70,6 @@ class FormBuilder extends \Collective\Html\FormBuilder
             $this->select($name . '_day', $days, $this->getValueAttribute($name . '_day', Carbon::now()->day), $options),
             $this->selectMonth($name . '_month', $this->getValueAttribute($name . '_month', Carbon::now()->month), $options),
             $this->selectYear($name . '_year', date('Y') - 1, date('Y') + 1, $this->getValueAttribute($name . '_year', Carbon::now()->year), $options));
-    }
-
-    /**
-     * Create a dropdown for the active users.
-     *
-     * @param       $name
-     * @param null  $selected
-     * @param array $options
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    public function userList($name, $selected = null, array $options = [])
-    {
-        // Get the list of users
-        $users = User::active()->nameOrder()->getSelect();
-
-        // Check if a blank entry is allowed
-        if (isset($options['include_blank']) && $options['include_blank']) {
-            // Define the blank text
-            if (isset($options['blank_text'])) {
-                $blank_text = $options['blank_text'];
-                unset($options['blank_text']);
-            } else {
-                $blank_text = '-- Select --';
-            }
-
-            $users = [null => $blank_text] + $users;
-            unset($options['include_blank']);
-        }
-
-        // Enable the use of the select2 plugin
-        if (isset($options['select2']) && $options['select2']) {
-            $options['select2'] = 'Select user';
-        }
-
-        return $this->select($name, $users, $selected, $options);
-    }
-
-    /**
-     * Create a dropdown for the active members.
-     *
-     * @param       $name
-     * @param null  $selected
-     * @param array $options
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    public function memberList($name, $selected = null, array $options = [])
-    {
-        // Get a list of members
-        $members = User::active()->member()->nameOrder()->getSelect();
-
-        // Check if a blank entry is allowed
-        if (isset($options['include_blank']) && $options['include_blank']) {
-            // Define the blank text
-            if (isset($options['blank_text'])) {
-                $blank_text = $options['blank_text'];
-                unset($options['blank_text']);
-            } else {
-                $blank_text = '-- Select --';
-            }
-
-            $members = [null => $blank_text] + $members;
-            unset($options['include_blank']);
-        }
-
-        // Enable the use of the select2 plugin
-        if (isset($options['select2']) && $options['select2']) {
-            $options['select2'] = 'Select member';
-        }
-
-        return $this->select($name, $members, $selected, $options);
     }
 
     /**
@@ -218,39 +146,5 @@ class FormBuilder extends \Collective\Html\FormBuilder
         ], $options);
 
         return $this->text($name, $value, $options);
-    }
-
-    /**
-     * Easily create a group of radio buttons.
-     *
-     * @param       $name
-     * @param array $list
-     * @param null  $selected
-     * @param array $options
-     *
-     * @return array
-     */
-    public function radioGroup($name, $list = [], $selected = null, $options = [])
-    {
-        $selected      = $this->getValueAttribute($name, $selected);
-        $options['id'] = $this->getIdAttribute($name, $options);
-        if (!isset($options['name'])) {
-            $options['name'] = $name;
-        }
-
-        $class = 'radio';
-        if (isset($options['class'])) {
-            $class .= ' ' . $options['class'];
-            unset($options['class']);
-        }
-
-        $html = [];
-        foreach ($list as $value => $text) {
-            $html[] = "<div class=\"{$class}\"><label>" . $this->radio($name, $value, $selected == $value, $options) . $text . '</label></div>';
-        }
-
-        $list = implode('', $html);
-
-        return $list;
     }
 }

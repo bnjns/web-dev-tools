@@ -4,16 +4,9 @@ namespace bnjns\WebDevTools\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class SimpleLaravelCrudPolicy
+class SimpleCrudPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Set the prefix for the authorisation string.
-     *
-     * @var string
-     */
-    protected $authorisationPrefix = '';
 
     /**
      * Test whether the user can view the list of items.
@@ -24,7 +17,7 @@ class SimpleLaravelCrudPolicy
      */
     public function index($user)
     {
-        return $user->can($this->authorisationPrefix . '.index');
+        return $user->can($this->authorisationPrefix() . '.index');
     }
 
     /**
@@ -36,7 +29,7 @@ class SimpleLaravelCrudPolicy
      */
     public function create($user)
     {
-        return $user->can($this->authorisationPrefix . '.create');
+        return $user->can($this->authorisationPrefix() . '.create');
     }
 
     /**
@@ -49,7 +42,7 @@ class SimpleLaravelCrudPolicy
      */
     public function edit($user, $model = null)
     {
-        return $user->can($this->authorisationPrefix . '.edit');
+        return $user->can($this->authorisationPrefix() . '.edit');
     }
 
     /**
@@ -62,6 +55,16 @@ class SimpleLaravelCrudPolicy
      */
     public function delete($user, $model = null)
     {
-        return $user->can($this->authorisationPrefix . '.delete');
+        return $user->can($this->authorisationPrefix() . '.delete');
+    }
+
+    /**
+     * Get the prefix for the authorisation string.
+     *
+     * @return string
+     */
+    protected function authorisationPrefix()
+    {
+        return isset($this->authorisationPrefix) ? $this->authorisationPrefix : '';
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-namespace bnjns\WebDevTools\Traits;
+namespace bnjns\WebDevTools\Laravel\Traits;
 
 use Carbon\Carbon;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 
 trait CorrectsTimezone
@@ -120,8 +122,8 @@ trait CorrectsTimezone
         }
 
         // Default to assuming user is in Europe/London
-        $tz = new \DateTimeZone('Europe/London');
-        $date = new \DateTime('now', $tz);
+        $tz     = new DateTimeZone('Europe/London');
+        $date   = new DateTime('now', $tz);
         $offset = round($date->getOffset() / 60, 2);
 
         return $offset * -1;

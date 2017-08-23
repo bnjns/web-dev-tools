@@ -1,15 +1,15 @@
 <?php
 
-namespace bnjns\WebDevTools\Controllers;
+namespace bnjns\WebDevTools\Laravel\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller as LaravelController;
+use Illuminate\Routing\Controller;
 use InvalidArgumentException;
 
-class SimpleLaravelCrudController extends LaravelController
+class SimpleCrudController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 

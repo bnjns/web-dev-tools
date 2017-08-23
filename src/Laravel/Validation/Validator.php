@@ -1,10 +1,10 @@
 <?php
 
-namespace bnjns\WebDevTools\Validation;
+namespace bnjns\WebDevTools\Laravel\Validation;
 
 use Illuminate\Validation\Validator as BaseValidator;
 
-class LaravelValidator extends BaseValidator
+class Validator extends BaseValidator
 {
     /**
      * Validate as a phone number.

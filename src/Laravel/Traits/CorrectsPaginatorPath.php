@@ -1,6 +1,6 @@
 <?php
 
-namespace bnjns\WebDevTools\Traits;
+namespace bnjns\WebDevTools\Laravel\Traits;
 
 trait CorrectsPaginatorPath
 {

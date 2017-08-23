@@ -1,13 +1,16 @@
 <?php
 
-namespace bnjns\WebDevTools\Providers;
+namespace bnjns\WebDevTools\Laravel\Providers;
 
-use bnjns\WebDevTools\Html\FormBuilder;
+use bnjns\WebDevTools\Laravel\Html\FormBuilder;
+use Collective\Html\HtmlServiceProvider as CollectiveHtmlProvider;
 
-class HtmlServiceProvider extends \Collective\Html\HtmlServiceProvider
+class HtmlServiceProvider extends CollectiveHtmlProvider
 {
     /**
      * Register the form builder instance.
+     *
+     * @return void
      */
     protected function registerFormBuilder()
     {

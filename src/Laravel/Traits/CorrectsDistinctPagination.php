@@ -8,7 +8,7 @@ use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
-trait DistinctPaginate
+trait CorrectsDistinctPagination
 {
     /**
      * A custom paginate method for when using the distinct() method. This fixes the incorrect 'total' reported by the default paginate.

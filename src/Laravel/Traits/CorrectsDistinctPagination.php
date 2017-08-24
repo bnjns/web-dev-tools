@@ -1,6 +1,6 @@
 <?php
 
-namespace bnjns\WebDevTools\Traits;
+namespace bnjns\WebDevTools\Laravel\Traits;
 
 use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;

@@ -35,11 +35,12 @@ class SimpleCrudPolicy
     /**
      * Test whether the user can view an item.
      *
-     * @param $user
+     * @param      $user
+     * @param null $model
      *
      * @return bool
      */
-    public function view($user)
+    public function view($user, $model = null)
     {
         return $user->can($this->authorisationPrefix() . '.item');
     }

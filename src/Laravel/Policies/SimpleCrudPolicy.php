@@ -33,6 +33,18 @@ class SimpleCrudPolicy
     }
 
     /**
+     * Test whether the user can view an item.
+     *
+     * @param $user
+     *
+     * @return bool
+     */
+    public function view($user)
+    {
+        return $user->can($this->authorisationPrefix() . '.item');
+    }
+
+    /**
      * Test whether the user can edit items.
      *
      * @param      $user

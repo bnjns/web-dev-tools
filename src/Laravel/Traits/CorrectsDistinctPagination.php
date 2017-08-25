@@ -2,7 +2,6 @@
 
 namespace bnjns\WebDevTools\Laravel\Traits;
 
-use Illuminate\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
@@ -13,14 +12,14 @@ trait CorrectsDistinctPagination
     /**
      * A custom paginate method for when using the distinct() method. This fixes the incorrect 'total' reported by the default paginate.
      *
-     * @param Builder $query
+     * @param         $query
      * @param int     $perPage
      * @param array   $columns
      * @param string  $pageName
      *
      * @return LengthAwarePaginator
      */
-    public function scopeDistinctPaginate(Builder $query, $perPage = 15, array $columns = ['*'], $pageName = 'page')
+    public function scopeDistinctPaginate($query, $perPage = 15, array $columns = ['*'], $pageName = 'page')
     {
         // Get the results
         $results = $query->distinct()
@@ -29,7 +28,7 @@ trait CorrectsDistinctPagination
 
         // Now do a count on an unlimited version of the previous query
         $query->limit(static::count())->offset(0);
-        $count = DB::select('SELECT COUNT(*) FROM ('.$query->toSql().') src;', $query->getBindings())[0]->{'COUNT(*)'};
+        $count = DB::select('SELECT COUNT(*) FROM (' . $query->toSql() . ') src;', $query->getBindings())[0]->{'COUNT(*)'};
 
         // Create the paginator
         return (new LengthAwarePaginator(

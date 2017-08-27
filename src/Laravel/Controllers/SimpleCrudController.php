@@ -122,7 +122,7 @@ class SimpleCrudController extends Controller
         $this->authorise('create');
 
         $request = request();
-        $this->validate($request, $this->getValidationRules($request), $this->getValidationMessages($request));
+        $this->validateWith($this->makeValidator($request), $request);
 
         $result = call_user_func([$this->modelClass, 'create'], $this->getAttributes($request));
 
@@ -178,7 +178,7 @@ class SimpleCrudController extends Controller
         $model = $this->getModelFromDatabase($key);
 
         $request = request();
-        $this->validate($request, $this->getValidationRules($request), $this->getValidationMessages($request));
+        $this->validateWith($this->makeValidator($request), $request);
 
         $status = $model->update($this->getAttributes($request));
         return [
@@ -243,6 +243,15 @@ class SimpleCrudController extends Controller
             $status,
             $model,
         ];
+    }
+
+    protected function makeValidator(Request $request)
+    {
+        return validator(
+            $request->all(),
+            $this->getValidationRules($request),
+            $this->getValidationMessages($request)
+        );
     }
 
     /**

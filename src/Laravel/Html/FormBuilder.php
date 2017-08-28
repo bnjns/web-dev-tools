@@ -23,7 +23,7 @@ class FormBuilder extends CollectiveFormBuilder
             return $selected->contains($value) ? 'selected' : null;
         }
 
-        return ((string)$value == (string)$selected) ? 'selected' : null;
+        return ((string)$value == (string)$selected && $value != '') ? 'selected' : null;
     }
 
     /**

@@ -18,7 +18,7 @@ class FormBuilder extends CollectiveFormBuilder
     protected function getSelectedValue($value, $selected)
     {
         if (is_array($selected)) {
-            return in_array($value, $selected, false) ? 'selected' : null;
+            return in_array($value, $selected, false) && $value != '' ? 'selected' : null;
         } else if ($selected instanceof Collection) {
             return $selected->contains($value) ? 'selected' : null;
         }

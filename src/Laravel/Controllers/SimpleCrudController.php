@@ -266,10 +266,11 @@ class SimpleCrudController extends Controller
      * Get the validation rules for the request.
      *
      * @param \Illuminate\Http\Request $request
+     * @param                          $model
      *
      * @return array
      */
-    protected function getValidationRules(Request $request)
+    protected function getValidationRules(Request $request, $model = null)
     {
         return $this->validationRules;
     }
@@ -278,10 +279,11 @@ class SimpleCrudController extends Controller
      * Get the validation messages for the request.
      *
      * @param \Illuminate\Http\Request $request
+     * @param                          $model
      *
      * @return array
      */
-    protected function getValidationMessages(Request $request)
+    protected function getValidationMessages(Request $request, $model = null)
     {
         return $this->validationMessages;
     }
@@ -361,10 +363,11 @@ class SimpleCrudController extends Controller
      * Get the attributes to use for storing and updating.
      *
      * @param \Illuminate\Http\Request $request
+     * @param                          $model
      *
      * @return mixed
      */
-    protected function getAttributes(Request $request)
+    protected function getAttributes(Request $request, $model = null)
     {
         return clean($request->only($this->attributes));
     }

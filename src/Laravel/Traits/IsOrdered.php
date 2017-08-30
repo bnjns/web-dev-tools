@@ -5,13 +5,6 @@ namespace bnjns\WebDevTools\Laravel\Traits;
 trait IsOrdered
 {
     /**
-     * Sets whether the model should process the order change when it's saved.
-     *
-     * @var bool
-     */
-    protected $processOrderOnSave = true;
-
-    /**
      * Register callbacks for the updating and deleted events.
      *
      * @return void
@@ -29,31 +22,20 @@ trait IsOrdered
          * Hook into the updating event to re-order the list.
          */
         static::updated(function ($model) {
-            if ($model->processOrderOnSave) {
-                $currentOrder = $model->original[static::orderAttributeName()];
-                $newOrder     = $model->{static::orderAttributeName()};
+            $currentOrder = $model->original[static::orderAttributeName()];
+            $newOrder     = $model->{static::orderAttributeName()};
 
-                if ($newOrder != $currentOrder) {
-                    $increasing = $newOrder > $currentOrder;
-                    if ($increasing) {
-                        $to_move = static::whereBetween(static::orderAttributeName(), [$currentOrder + 1, $newOrder]);
-                    } else {
-                        $to_move = static::whereBetween(static::orderAttributeName(), [$newOrder, $currentOrder - 1]);
-                    }
-
-                    $to_move->where('id', '!=', $model->id)
-                            ->get()
-                            ->map(function ($m) use ($increasing) {
-                                $m->processOrderOnSave = false;
-                                $m->update([
-                                    static::orderAttributeName() => $increasing
-                                        ? ($m->{static::orderAttributeName()} - 1)
-                                        : ($m->{static::orderAttributeName()} + 1),
-                                ]);
-                            });
+            if ($newOrder != $currentOrder) {
+                if ($newOrder > $currentOrder) {
+                    static::whereBetween(static::orderAttributeName(), [$currentOrder + 1, $newOrder])
+                          ->where($model->getKeyName(), '!=', $model->getKey())
+                          ->decrement(static::orderAttributeName());
+                } else {
+                    static::whereBetween(static::orderAttributeName(), [$newOrder, $currentOrder - 1])
+                          ->where($model->getKeyName(), '!=', $model->getKey())
+                          ->increment(static::orderAttributeName());
                 }
             }
-            $model->processOrderOnSave = true;
         });
 
         /**
@@ -61,13 +43,7 @@ trait IsOrdered
          */
         static::deleted(function ($model) {
             static::where(static::orderAttributeName(), '>', $model->{static::orderAttributeName()})
-                  ->get()
-                  ->map(function ($m) {
-                      $m->processOrderOnSave = false;
-                      $m->update([
-                          static::orderAttributeName() => $m->{static::orderAttributeName()} - 1,
-                      ]);
-                  });
+                  ->decrement(static::orderAttributeName());
         });
 
         /**
@@ -134,16 +110,10 @@ trait IsOrdered
      */
     public function insertIntoOrder()
     {
-        if ($this->exists()) {
+        if ($this->exists() && static::where(static::orderAttributeName(), $this->{static::orderAttributeName()})->count() > 1) {
             static::where(static::orderAttributeName(), '>=', $this->{static::orderAttributeName()})
-                  ->where('id', '!=', $this->id)
-                  ->get()
-                  ->map(function ($m) {
-                      $m->processOrderOnSave = false;
-                      $m->update([
-                          static::orderAttributeName() => $m->{static::orderAttributeName()} + 1,
-                      ]);
-                  });
+                  ->where($this->getKeyName(), '!=', $this->getKey())
+                  ->increment(static::orderAttributeName());
         }
     }
 
@@ -158,8 +128,8 @@ trait IsOrdered
     {
         if ($this->exists()) {
             $newOrder = (int)$newOrder;
-            if ($newOrder == $this->{static::orderAttributeName()} || $newOrder < 1 || $newOrder > static::count()) {
-                return;
+            if ($newOrder < 1 || $newOrder > static::count()) {
+                return false;
             }
 
             return $this->update([

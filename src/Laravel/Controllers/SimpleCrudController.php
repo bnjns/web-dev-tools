@@ -122,7 +122,7 @@ class SimpleCrudController extends Controller
         $this->authorise('create');
 
         $request = request();
-        $this->validateWith($this->makeValidator($request), $request);
+        $this->validateWith($this->makeValidator($request, null), $request);
 
         $result = call_user_func([$this->modelClass, 'create'], $this->getAttributes($request));
 
@@ -178,7 +178,7 @@ class SimpleCrudController extends Controller
         $model = $this->getModelFromDatabase($key);
 
         $request = request();
-        $this->validateWith($this->makeValidator($request), $request);
+        $this->validateWith($this->makeValidator($request, $model), $request);
 
         $status = $model->update($this->getAttributes($request));
         return [
@@ -245,7 +245,15 @@ class SimpleCrudController extends Controller
         ];
     }
 
-    protected function makeValidator(Request $request)
+    /**
+     * Make the validator instance for the store and update methods.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param null                     $model
+     *
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function makeValidator(Request $request, $model = null)
     {
         return validator(
             $request->all(),

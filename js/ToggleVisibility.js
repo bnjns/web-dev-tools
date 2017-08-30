@@ -4,18 +4,14 @@
         var name  = input.attr('name');
         var type  = input.attr('type');
         var form  = $(this.form);
-        
+
         form.find('[data-visibility-input="' + name + '"]').hide();
-        
-        if(type == 'checkbox') {
-            if(this.checked) {
-                var state = 'checked';
-            } else {
-                var state = 'unchecked';
-            }
+
+        if (type == 'checkbox') {
+            var state = this.checked ? 'checked' : 'unchecked';
             form.find('[data-visibility-input="' + name + '"][data-visibility-state="' + state + '"]').show();
-        } else if(type == 'radio') {
-            if(input.is(':checked')) {
+        } else if (type == 'radio') {
+            if (input.is(':checked')) {
                 form.find('[data-visibility-input="' + name + '"][data-visibility-value="' + this.value + '"]').show();
             }
         } else {

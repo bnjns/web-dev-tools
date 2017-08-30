@@ -141,7 +141,7 @@ trait CorrectsTimezone
     public function stored($attribute)
     {
         if ($this->exists && isset($this->correct_tz[$attribute])) {
-            return $this->attributes[$attribute . '_stored'];
+            return Carbon::createFromFormat($this->getDateFormat(), $this->attributes[$attribute . '_stored'] ?: $this->attributes[$attribute]);
         }
     }
 }

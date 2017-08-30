@@ -23,6 +23,9 @@ class BladeServiceProvider extends ServiceProvider
         Blade::directive('InputError', function ($name) {
             return "<?php echo \$errors->any() && \$errors->default->has({$name}) ? ('<p class=\"help-block\">' . \$errors->default->first({$name}) . '</p>') : ''; ?>";
         });
+        Blade::directive('Paginator', function ($name) {
+            return "<?php echo get_class({$name}) == 'Illuminate\Pagination\LengthAwarePaginator' ? {$name} : ''; ?>";
+        });
     }
 
     /**

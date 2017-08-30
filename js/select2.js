@@ -3,6 +3,7 @@ function select2(element, options) {
         jQuery.extend({
                 theme     : 'bootstrap',
                 allowClear: false,
+
             },
             typeof(options) == 'object' ? options : {}),
     );

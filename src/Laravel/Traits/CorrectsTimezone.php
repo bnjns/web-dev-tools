@@ -84,8 +84,10 @@ trait CorrectsTimezone
         if ($this->exists) {
             // Update the attributes
             foreach ($attributeNames as $name) {
-                $this->attributes[$name] = $this->correctTzForDisplay($this->asDateTime($this->attributes[$name]))
-                                                ->format($this->getDateFormat());
+                $this->attributes[$name . '_stored'] = $this->attributes[$name];
+                $this->original[$name . '_stored']   = $this->original[$name];
+                $this->attributes[$name]             = $this->correctTzForDisplay($this->asDateTime($this->attributes[$name]))
+                                                            ->format($this->getDateFormat());
             }
 
             // Sync the originals so it doesn't look like they've changed.
@@ -127,5 +129,19 @@ trait CorrectsTimezone
         $offset = round($date->getOffset() / 60, 2);
 
         return $offset * -1;
+    }
+
+    /**
+     * Get the original, stored value of a time-corrected attribute.
+     *
+     * @param $attribute
+     *
+     * @return mixed
+     */
+    public function stored($attribute)
+    {
+        if ($this->exists && isset($this->correct_tz[$attribute])) {
+            return $this->attributes[$attribute . '_stored'];
+        }
     }
 }

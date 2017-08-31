@@ -94,13 +94,15 @@ trait AccountsForTimezones
         static::saving(function ($model) {
             $attributes = $model->attributesToCorrect();
             foreach ($attributes as $attribute) {
-                $model->attributes[$attribute] = static::correctForDatabase($model->asDateTime($model->attributes[$attribute]))
-                                                       ->format($model->getDateFormat());
-                if (isset($model->attributes[$attribute . '__uncorrected'])) {
-                    unset($model->attributes[$attribute . '__uncorrected']);
-                }
-                if (isset($model->original[$attribute . '__uncorrected'])) {
-                    unset($model->original[$attribute . '__uncorrected']);
+                if (isset($model->attributes[$attribute])) {
+                    $model->attributes[$attribute] = static::correctForDatabase($model->asDateTime($model->attributes[$attribute]))
+                                                           ->format($model->getDateFormat());
+                    if (isset($model->attributes[$attribute . '__uncorrected'])) {
+                        unset($model->attributes[$attribute . '__uncorrected']);
+                    }
+                    if (isset($model->original[$attribute . '__uncorrected'])) {
+                        unset($model->original[$attribute . '__uncorrected']);
+                    }
                 }
             }
         });
@@ -186,10 +188,15 @@ trait AccountsForTimezones
      */
     protected function convertAttributeFromDatabase($attributeName)
     {
-        $this->attributes[$attributeName . '__uncorrected'] = $this->attributes[$attributeName];
-        $this->original[$attributeName . '__uncorrected']   = $this->attributes[$attributeName];
-        $this->attributes[$attributeName]                   = static::correctForDisplay($this->asDateTime($this->attributes[$attributeName]))
-                                                                    ->format($this->getDateFormat());
-        $this->original[$attributeName]                     = $this->attributes[$attributeName];
+        if (isset($this->attributes[$attributeName])) {
+            $this->attributes[$attributeName . '__uncorrected'] = $this->attributes[$attributeName];
+            $this->attributes[$attributeName]                   = static::correctForDisplay($this->asDateTime($this->attributes[$attributeName]))
+                                                                        ->format($this->getDateFormat());
+
+            if (isset($this->original[$attributeName])) {
+                $this->original[$attributeName . '__uncorrected'] = $this->attributes[$attributeName];
+                $this->original[$attributeName]                   = $this->attributes[$attributeName];
+            }
+        }
     }
 }

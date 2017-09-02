@@ -33,7 +33,7 @@ function datetimepicker(input, options) {
         {},
         Defaults,
         typeof(options) == 'object' ? options : {},
-        attributes,
+        attributes
     );
 
     if (parent.hasClass('input-group')) {

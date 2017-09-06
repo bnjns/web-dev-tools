@@ -7,12 +7,12 @@
         var btn = $(this);
 
         if (!btn.data('submitConfirm') || confirm(btn.data('submitConfirm'))) {
-            var action   = btn.data('submitAjax');
-            var data     = btn.data();
-            var redirect = btn.data('successUrl') ? btn.data('successUrl') : window.location;
+            var action = btn.data('submitAjax');
+            var data   = btn.data();
             delete data['submitAjax'];
             delete data['submitConfirm'];
-            delete data['successUrl'];
+            delete data['redirect'];
+            delete data['redirectLocation'];
             btn.attr('disabled', 'disabled');
 
             $.ajax({
@@ -20,7 +20,13 @@
                 url    : action,
                 type   : 'post',
                 success: function() {
-                    window.location = redirect;
+                    if (btn.data('redirect') || btn.data('redirect') == 'true') {
+                        if (btn.data('redirectLocation')) {
+                            location.assign(btn.data('redirectLocation'));
+                        } else {
+                            location.reload(true);
+                        }
+                    }
                 },
                 error  : function(data) {
                     btn.attr('disabled', false);

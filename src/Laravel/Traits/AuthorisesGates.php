@@ -2,6 +2,8 @@
 
 namespace bnjns\WebDevTools\Laravel\Traits;
 
+use Illuminate\Auth\Access\AuthorizationException;
+
 trait AuthorisesGates
 {
     /**

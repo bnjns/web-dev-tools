@@ -16,7 +16,7 @@ trait ValidatableModel
         }
 
         $fields = func_get_args();
-        if (count($fields == 1) && is_array($fields)) {
+        if (count($fields) == 1 && is_array($fields)) {
             $fields = array_pop($fields);
         }
         $rules = [];
@@ -42,7 +42,7 @@ trait ValidatableModel
         }
 
         $fields = func_get_args();
-        if (count($fields == 1) && is_array($fields)) {
+        if (count($fields) == 1 && is_array($fields)) {
             $fields = array_pop($fields);
         }
         $messages = [];

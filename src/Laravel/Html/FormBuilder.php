@@ -27,6 +27,56 @@ class FormBuilder extends CollectiveFormBuilder
     }
 
     /**
+     * Override the label method to automatically include the bootstrap class.
+     *
+     * @param       $name
+     * @param null  $value
+     * @param array $options
+     * @param bool  $escape_html
+     *
+     * @return mixed
+     */
+    public function label($name, $value = null, $options = [], $escape_html = true)
+    {
+        $options['class'] = trim('control-label ' . (isset($options['class']) ? $options['class'] : ''));
+        return parent::label($name, $value, $options, $escape_html);
+    }
+
+    /**
+     * Override the input method to automatically include the bootstrap class.
+     *
+     * @param       $type
+     * @param       $name
+     * @param null  $value
+     * @param array $options
+     *
+     * @return mixed
+     */
+    public function input($type, $name, $value = null, $options = [])
+    {
+        $options['class'] = trim('form-control ' . (isset($options['class']) ? $options['class'] : ''));
+        return parent::input($type, $name, $value, $options);
+    }
+
+    /**
+     * Override the textarea method to automatically include the bootstrap class.
+     *
+     * @param string $name
+     * @param null   $value
+     * @param array  $options
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function textarea($name, $value = null, $options = [])
+    {
+        $options['class'] = trim('form-control ' . (isset($options['class']) ? $options['class'] : ''));
+        if (!isset($options['rows'])) {
+            $options['rows'] = 3;
+        }
+        return parent::textarea($name, $value, $options);
+    }
+
+    /**
      * Create a dropdown group for hour and minute.
      *
      * @param       $name

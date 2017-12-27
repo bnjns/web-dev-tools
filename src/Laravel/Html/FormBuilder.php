@@ -27,6 +27,25 @@ class FormBuilder extends CollectiveFormBuilder
     }
 
     /**
+     * Add the bootstrap classes.
+     *
+     * @param       $name
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function setBoostrapClasses($name, $options = [])
+    {
+        $classes   = explode(' ', isset($options['class']) ? $options['class'] : []);
+        $classes[] = 'form-control';
+        if (($errors = session()->get('errors'))) {
+            $options['class'] .= ' ' . ($errors->default->has($name) ? 'is-invalid' : 'is-valid');
+        }
+        $options['class'] = implode(' ', $classes);
+        return $options;
+    }
+
+    /**
      * Override the label method to automatically include the bootstrap class.
      *
      * @param       $name
@@ -54,8 +73,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function input($type, $name, $value = null, $options = [])
     {
-        $options['class'] = trim('form-control ' . (isset($options['class']) ? $options['class'] : ''));
-        return parent::input($type, $name, $value, $options);
+        return parent::input($type, $name, $value, $this->setBoostrapClasses($name, $options));
     }
 
     /**
@@ -69,11 +87,10 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function textarea($name, $value = null, $options = [])
     {
-        $options['class'] = trim('form-control ' . (isset($options['class']) ? $options['class'] : ''));
         if (!isset($options['rows'])) {
             $options['rows'] = 3;
         }
-        return parent::textarea($name, $value, $options);
+        return parent::textarea($name, $value, $this->setBoostrapClasses($name, $options));
     }
 
     /**
@@ -89,8 +106,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function select($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [])
     {
-        $selectAttributes['class'] = trim('form-control ' . (isset($selectAttributes['class']) ? $selectAttributes['class'] : ''));
-        return parent::select($name, $list, $selected, $selectAttributes, $optionsAttributes);
+        return parent::select($name, $list, $selected, $this->setBoostrapClasses($name, $selectAttributes), $optionsAttributes);
     }
 
     /**

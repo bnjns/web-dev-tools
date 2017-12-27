@@ -94,6 +94,23 @@ class FormBuilder extends CollectiveFormBuilder
     }
 
     /**
+     * Create a select dropdown that enables the select2 plugin.
+     *
+     * @param       $name
+     * @param array $list
+     * @param null  $selected
+     * @param array $selectAttributes
+     * @param array $optionsAttributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function select2($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [])
+    {
+        $selectAttributes['select2'] = 'true';
+        return $this->select($name, $list, $selected, $selectAttributes, $optionsAttributes);
+    }
+
+    /**
      * Create a dropdown group for hour and minute.
      *
      * @param       $name

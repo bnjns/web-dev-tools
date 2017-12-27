@@ -77,6 +77,23 @@ class FormBuilder extends CollectiveFormBuilder
     }
 
     /**
+     * Override the select method to automatically include the bootstrap class.
+     *
+     * @param string $name
+     * @param array  $list
+     * @param null   $selected
+     * @param array  $selectAttributes
+     * @param array  $optionsAttributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function select($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [])
+    {
+        $selectAttributes['class'] = trim('form-control ' . (isset($selectAttributes['class']) ? $selectAttributes['class'] : ''));
+        return parent::select($name, $list, $selected, $selectAttributes, $optionsAttributes);
+    }
+
+    /**
      * Create a dropdown group for hour and minute.
      *
      * @param       $name

@@ -18,4 +18,19 @@ trait UsesSoftDeletes
             $query->withTrashed();
         }
     }
+
+    /**
+     * Add a scope to automatically switch between non-trashed and trashed items.
+     *
+     * @param $query
+     *
+     * @return void
+     */
+    public function scopeAutoOnlyTrashed($query)
+    {
+        if (method_exists($this, 'restore') &&
+            (request()->exists('deleted') && (empty(request()->get('deleted')) || request()->get('deleted')))) {
+            $query->onlyTrashed();
+        }
+    }
 }

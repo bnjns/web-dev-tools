@@ -23,6 +23,9 @@ class BladeServiceProvider extends ServiceProvider
         Blade::directive('Paginator', function ($name) {
             return "<?php echo get_class({$name}) == 'Illuminate\Pagination\LengthAwarePaginator' ? {$name} : ''; ?>";
         });
+        Blade::directive('ContentWidth', function () {
+            return "<?php echo !empty(trim(\$__env->yieldContent('content-width'))) ? ('w-' . \$__env->yieldContent('content-width')) : ''; ?>";
+        });
     }
 
     /**

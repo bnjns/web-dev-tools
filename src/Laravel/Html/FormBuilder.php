@@ -39,7 +39,7 @@ class FormBuilder extends CollectiveFormBuilder
         $classes   = isset($options['class']) ? explode(' ', $options['class']) : [];
         $classes[] = 'form-control';
         if (($errors = session()->get('errors'))) {
-            $options['class'] .= ' ' . ($errors->default->has($name) ? 'is-invalid' : 'is-valid');
+            $classes[] = $errors->default->has($name) ? 'is-invalid' : 'is-valid';
         }
         $options['class'] = implode(' ', $classes);
         return $options;

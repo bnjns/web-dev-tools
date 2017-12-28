@@ -38,7 +38,7 @@ class Bootstrap4NavbarPresenter extends Presenter implements PresenterInterface
      */
     public function getMenuWithoutDropdownWrapper($item, $itemClass = 'nav-item nav-link')
     {
-        $class = $itemClass . ' ' . $this->getItemClasses($item);
+        $class = $itemClass . ' ' . $this->getItemClasses($item) . $this->getActiveClass($item);
         return '<a class="' . trim($class) . '" href="' . $item->getUrl() . '" ' . $item->getAttributes() . '>' .
                trim($item->getIcon() . ' ' . $item->title) .
                '</a>';

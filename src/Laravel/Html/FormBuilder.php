@@ -36,7 +36,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     protected function setBoostrapClasses($name, $options = [])
     {
-        $classes   = explode(' ', isset($options['class']) ? $options['class'] : []);
+        $classes   = isset($options['class']) ? explode(' ', $options['class']) : [];
         $classes[] = 'form-control';
         if (($errors = session()->get('errors'))) {
             $options['class'] .= ' ' . ($errors->default->has($name) ? 'is-invalid' : 'is-valid');

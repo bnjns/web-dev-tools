@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenters;
+namespace bnjns\WebDevTools\Laravel\Presenters;
 
 class Bootstrap4NavbarRightPresenter extends Bootstrap4NavbarPresenter
 {

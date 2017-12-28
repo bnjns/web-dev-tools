@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenters;
+namespace bnjns\WebDevTools\Laravel\Presenters;
 
 use Nwidart\Menus\MenuItem;
 use Nwidart\Menus\Presenters\Presenter;

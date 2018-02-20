@@ -30,14 +30,17 @@ class FormBuilder extends CollectiveFormBuilder
      * Add the bootstrap classes.
      *
      * @param       $name
+     * @param       $type
      * @param array $options
      *
      * @return array
      */
-    protected function setBoostrapClasses($name, $options = [])
+    protected function setBoostrapClasses($name, $type, $options = [])
     {
-        $classes   = isset($options['class']) ? explode(' ', $options['class']) : [];
-        $classes[] = 'form-control';
+        $classes = isset($options['class']) ? explode(' ', $options['class']) : [];
+        if (!in_array($type, ['checkbox', 'radio'])) {
+            $classes[] = 'form-control';
+        }
         if (($errors = session()->get('errors'))) {
             $classes[] = $errors->default->has($name) ? 'is-invalid' : 'is-valid';
         }
@@ -73,7 +76,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function input($type, $name, $value = null, $options = [])
     {
-        return parent::input($type, $name, $value, $this->setBoostrapClasses($name, $options));
+        return parent::input($type, $name, $value, $this->setBoostrapClasses($name, $type, $options));
     }
 
     /**
@@ -90,7 +93,7 @@ class FormBuilder extends CollectiveFormBuilder
         if (!isset($options['rows'])) {
             $options['rows'] = 3;
         }
-        return parent::textarea($name, $value, $this->setBoostrapClasses($name, $options));
+        return parent::textarea($name, $value, $this->setBoostrapClasses($name, 'textarea', $options));
     }
 
     /**
@@ -106,7 +109,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function select($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [])
     {
-        return parent::select($name, $list, $selected, $this->setBoostrapClasses($name, $selectAttributes), $optionsAttributes);
+        return parent::select($name, $list, $selected, $this->setBoostrapClasses($name, 'select', $selectAttributes), $optionsAttributes);
     }
 
     /**

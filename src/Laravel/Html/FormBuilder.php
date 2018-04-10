@@ -41,6 +41,9 @@ class FormBuilder extends CollectiveFormBuilder
         if (!in_array($type, ['checkbox', 'radio'])) {
             $classes[] = 'form-control';
         }
+        if (in_array($type, ['checkbox', 'radio'])) {
+            $classes[] = 'form-check-input';
+        }
         if (($errors = session()->get('errors'))) {
             $classes[] = $errors->default->has($name) ? 'is-invalid' : 'is-valid';
         }

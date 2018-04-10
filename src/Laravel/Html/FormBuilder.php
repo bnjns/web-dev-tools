@@ -104,12 +104,13 @@ class FormBuilder extends CollectiveFormBuilder
      * @param null   $selected
      * @param array  $selectAttributes
      * @param array  $optionsAttributes
+     * @param array  $optgroupsAttributes
      *
      * @return \Illuminate\Support\HtmlString
      */
-    public function select($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [])
+    public function select($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
     {
-        return parent::select($name, $list, $selected, $this->setBoostrapClasses($name, 'select', $selectAttributes), $optionsAttributes);
+        return parent::select($name, $list, $selected, $this->setBoostrapClasses($name, 'select', $selectAttributes), $optionsAttributes, $optgroupsAttributes);
     }
 
     /**

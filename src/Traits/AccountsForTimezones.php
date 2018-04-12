@@ -95,6 +95,8 @@ trait AccountsForTimezones
             $attributes = $model->attributesToCorrect();
             foreach ($attributes as $attribute) {
                 if (isset($model->attributes[$attribute])) {
+                    // Force updating all attributes by resetting the "original". Not pretty, but makes sure they update.
+                    $model->original[$attribute]   = Carbon::create(1970, 1, 1)->format($model->getDateFormat());
                     $model->attributes[$attribute] = static::correctForDatabase($model->asDateTime($model->attributes[$attribute]))
                                                            ->format($model->getDateFormat());
                     if (isset($model->attributes[$attribute . '__uncorrected'])) {

@@ -64,9 +64,12 @@ class Handler extends BaseHandler
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
+     * @param                                          $request
+     * @param \Illuminate\Auth\AuthenticationException $exception
+     *
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated()
+    protected function unauthenticated($request, AuthenticationException $exception)
     {
         return redirect()->guest(isset($this->loginRoute) ? $this->loginRoute : '/');
     }

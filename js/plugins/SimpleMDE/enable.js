@@ -7,8 +7,4 @@
             });
         });
     };
-
-    jQuery(document).ready(function() {
-        $('[data-type="simplemde"]').SimpleMDE();
-    });
 })(jQuery);

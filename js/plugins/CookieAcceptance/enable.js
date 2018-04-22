@@ -4,8 +4,4 @@
             Cookies.set('CookiePolicyAccepted', true, {expires: 30});
         });
     };
-
-    jQuery(document).ready(function() {
-        $('#cookie-policy-msg').CookieAcceptance();
-    });
 })(jQuery);

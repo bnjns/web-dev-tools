@@ -3,7 +3,7 @@ jQuery(document).ready(function() {
 
     if (typeof $modal != 'undefined') {
         $modal.onShow(function() {
-            $modal.ToggleVisibility();
+            $modal.modal.ToggleVisibility();
         });
     }
 });

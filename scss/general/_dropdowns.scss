@@ -48,7 +48,7 @@ main, footer {
                 color: $colour_dropdown_active_text;
             }
             &.current {
-                background: map-get($blue, darken-4);
+                background: $colour_dropdown_current_bg;
                 color: #fff;
             }
             

@@ -12,10 +12,10 @@
             form.find('[data-visibility-input="' + name + '"][data-visibility-state="' + state + '"]').show();
         } else if (type == 'radio') {
             if (input.is(':checked')) {
-                form.find('[data-visibility-input="' + name + '"][data-visibility-value="' + this.value + '"]').show();
+                form.find('[data-visibility-input="' + name + '"][data-visibility-value*="' + this.value + '"]').show();
             }
         } else {
-            form.find('[data-visibility-input="' + name + '"][data-visibility-value="' + this.value + '"]').show();
+            form.find('[data-visibility-input="' + name + '"][data-visibility-value*="' + this.value + '"]').show();
         }
     });
     $('[data-type="toggle-visibility"]').trigger('change');

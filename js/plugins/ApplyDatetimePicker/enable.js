@@ -19,24 +19,25 @@
     };
 
     $.fn.ApplyDatetimePicker = function(options) {
-        var element = $(this).eq(0);
-        var attributes = {};
-        var regex      = /^data\-date\-(.*)/;
-        var regex_result;
-        $.each(element.attributes, function(i, attribute) {
-            regex_result = regex.exec(attribute.name);
-            if (regex_result != null) {
-                attributes[regex_result[1].toCamelCase()] = attribute.value;
-            }
+        this.each(function(i, element) {
+            var attributes = {};
+            var regex      = /^data\-date\-(.*)/;
+            var regex_result;
+            $.each(element.attributes, function(i, attribute) {
+                regex_result = regex.exec(attribute.name);
+                if (regex_result != null) {
+                    attributes[regex_result[1].toCamelCase()] = attribute.value;
+                }
+            });
+
+            options = $.extend(
+                {},
+                Defaults,
+                typeof(options) == 'object' ? options : {},
+                attributes
+            );
+
+            $(element).datetimepicker(options);
         });
-
-        options = $.extend(
-            {},
-            Defaults,
-            typeof(options) == 'object' ? options : {},
-            attributes
-        );
-
-        $(element).datetimepicker(options);
     };
 })(jQuery);

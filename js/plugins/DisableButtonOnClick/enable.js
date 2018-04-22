@@ -1,6 +1,6 @@
 (function($) {
     $.fn.DisableButtonOnClick = function() {
-        var btn  = $(this);
+        var btn  = $(this).filter('.btn');
         var text = btn.attr('data-disable-text') || null;
         var icon = btn.attr('data-disable-icon') || 'spinner';
         var html = '<span class="fa fa-' + icon + ' fa-spin"></span>';

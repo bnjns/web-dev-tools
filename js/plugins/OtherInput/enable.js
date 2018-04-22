@@ -1,7 +1,7 @@
 (function($) {
     $.fn.OtherInput = function() {
-        this.each(function() {
-            var input       = $(this);
+        this.each(function(i, element) {
+            var input       = $(element);
             var other_input = $('[name="' + input.data('otherInput') + '"]');
             var other_value = input.data('otherValue') || 'other';
 

@@ -1,8 +1,8 @@
 (function($) {
     $.fn.SimpleMDE = function() {
-        this.each(function() {
+        this.each(function(i, element) {
             var simplemde = new SimpleMDE({
-                element: this,
+                element: element,
                 status : false,
             });
         });

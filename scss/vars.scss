@@ -1,8 +1,5 @@
-// Bootstrap
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "bootstrap";
+// Import "namespaced" bootstrap variables
+@import "bootstrap_vars";
 
 // Breakpoints
 $breakpoint_sm: 576px !default;

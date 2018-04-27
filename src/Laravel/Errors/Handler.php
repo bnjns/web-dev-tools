@@ -37,7 +37,7 @@ class Handler extends BaseHandler
         }
 
         if ($this->showRedirectToAuthentication($request, $exception)) {
-            return $this->unauthenticated();
+            return $this->unauthenticated($request, $exception);
         }
 
         return parent::render($request, $exception);

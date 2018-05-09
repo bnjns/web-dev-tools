@@ -37,7 +37,7 @@ class Handler extends BaseHandler
         }
 
         if ($this->showRedirectToAuthentication($request, $exception)) {
-            return $this->unauthenticated($request, $exception);
+            return redirect()->guest(isset($this->loginRoute) ? $this->loginRoute : '/');
         }
 
         return parent::render($request, $exception);
@@ -71,7 +71,9 @@ class Handler extends BaseHandler
      */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
-        return redirect()->guest(isset($this->loginRoute) ? $this->loginRoute : '/');
+        return $request->expectsJson()
+            ? response()->json(['message' => $exception->getMessage()], 401)
+            : redirect()->guest(isset($this->loginRoute) ? $this->loginRoute : '/');
     }
 
     /**

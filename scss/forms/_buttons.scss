@@ -18,7 +18,7 @@
 }
 
 .btn.btn-highlight, .btn.btn-highlight-light, .btn-group.btn-group-highlight > .btn, .btn-group.btn-group-highlight-light > .btn {
-    &:not(:hover, :active, :focus, .btn-no-highlight) {
+    &:not(:hover):not(:active):not(:focus):not(.btn-no-highlight) {
         color: color-yiq($bootstrap-light);
         @include gradient-bg($bootstrap-light);
         border-color: $bootstrap-light;
@@ -27,7 +27,7 @@
 }
 
 .btn.btn-highlight-dark, .btn-group.btn-group-highlight-dark > .btn {
-    &:not(:hover, :active, :focus, .btn-no-highlight) {
+    &:not(:hover):not(:active):not(:focus):not(.btn-no-highlight) {
         color: color-yiq($bootstrap-dark);
         @include gradient-bg($bootstrap-dark);
         border-color: $bootstrap-dark;

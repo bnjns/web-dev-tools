@@ -33,6 +33,16 @@ class BladeServiceProvider extends ServiceProvider
         Blade::directive('ContentWidth', function () {
             return "<?php echo !empty(trim(\$__env->yieldContent('content-width'))) ? ('w-' . \$__env->yieldContent('content-width')) : ''; ?>";
         });
+        Blade::directive('Script', function ($arguments) {
+            $arguments = $this->getDirectiveArguments($arguments);
+            list($url, $mix) = array_pad($arguments, 2, false);
+            return "<?php echo '<script src=\"" . asset($mix ? mix($url) : $url) . "\"></script>'; ?>";
+        });
+        Blade::directive('Stylesheet', function ($arguments) {
+            $arguments = $this->getDirectiveArguments($arguments);
+            list($url, $mix) = array_pad($arguments, 2, false);
+            return "<?php echo '<link rel=\"stylesheet\" href=\"" . asset($mix ? mix($url) : $url) . "\">'; ?>";
+        });
     }
 
     /**

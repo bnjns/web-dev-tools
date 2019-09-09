@@ -5,7 +5,6 @@ namespace bnjns\WebDevTools\Laravel\Traits;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Input;
 
 trait CorrectsDistinctPagination
 {
@@ -23,7 +22,7 @@ trait CorrectsDistinctPagination
     {
         // Get the results
         $results = $query->distinct()
-                         ->forPage(Input::get($pageName, 1), $perPage)
+            ->forPage(request()->input($pageName, 1), $perPage)
                          ->get($columns);
 
         // Now do a count on an unlimited version of the previous query
@@ -37,6 +36,6 @@ trait CorrectsDistinctPagination
             $perPage,
             Paginator::resolveCurrentPage(),
             ['path' => Paginator::resolveCurrentPath()]
-        ))->appends(Input::except('page'));
+        ))->appends(request()->except('page'));
     }
 }

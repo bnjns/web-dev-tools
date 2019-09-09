@@ -10,9 +10,9 @@ trait ChecksPaginationPage
     /**
      * Redirect to page 1 if the paginator is empty.
      *
-     * @param \Illuminate\Pagination\LengthAwarePaginator $paginator
+     * @param LengthAwarePaginator $paginator
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return void
      */
     protected function checkPage(LengthAwarePaginator $paginator)
     {

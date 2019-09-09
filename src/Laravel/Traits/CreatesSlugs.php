@@ -3,6 +3,7 @@
 namespace bnjns\WebDevTools\Laravel\Traits;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 trait CreatesSlugs
 {
@@ -19,6 +20,6 @@ trait CreatesSlugs
      */
     public function slugify(Request $request, $slugName = 'slug', $defaultName = 'name')
     {
-        return $request->get($slugName) ? strtolower($request->get($slugName)) : str_slug($request->get($defaultName));
+        return $request->get($slugName) ? strtolower($request->get($slugName)) : Str::slug($request->get($defaultName));
     }
 }

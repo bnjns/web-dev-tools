@@ -5,16 +5,18 @@ namespace bnjns\WebDevTools\Traits;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
+use Exception;
 
 trait AccountsForTimezones
 {
     /**
      * Correct a date for storage (from user's timezone to UTC).
      *
-     * @param \Carbon\Carbon $date
-     * @param null           $offset
+     * @param Carbon $date
+     * @param null   $offset
      *
-     * @return static
+     * @return Carbon
+     * @throws Exception
      */
     public static function correctForDatabase(Carbon $date, $offset = null)
     {
@@ -25,10 +27,11 @@ trait AccountsForTimezones
     /**
      * Correct a date for displaying (from UTC to user's timezone).
      *
-     * @param \Carbon\Carbon $date
-     * @param null           $offset
+     * @param Carbon $date
+     * @param null   $offset
      *
-     * @return static
+     * @return Carbon
+     * @throws Exception
      */
     public static function correctForDisplay(Carbon $date, $offset = null)
     {
@@ -55,6 +58,7 @@ trait AccountsForTimezones
      * Get the offset to use for timezone correction.
      *
      * @return float
+     * @throws Exception
      */
     protected static function getTzCorrection()
     {
@@ -187,6 +191,7 @@ trait AccountsForTimezones
      * @param $attributeName
      *
      * @return void
+     * @throws Exception
      */
     protected function convertAttributeFromDatabase($attributeName)
     {
